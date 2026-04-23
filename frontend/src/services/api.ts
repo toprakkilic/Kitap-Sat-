@@ -10,12 +10,14 @@ export const authService = {
 
 export const adminService = {
   resetSystem: () => api.post('/admin/reset'),
+  seedBulkData: () => api.post('/admin/seed-bulk'), // <-- Yeni satır
   getMonthlyReports: () => api.get('/orders/reports/monthly'),
 };
 
 export const bookService = {
   getAll: () => api.get('/books'),
   delete: (id: number) => api.delete(`/books/${id}`),
+  create: (book: any) => api.post('/books', book), // <-- BU SATIRI EKLE
 };
 
 export const orderService = {
