@@ -21,6 +21,7 @@ export const bookService = {
   getAll: () => api.get('/books'),
   delete: (id: number) => api.delete(`/books/${id}`),
   create: (book: any) => api.post('/books', book), // <-- BU SATIRI EKLE
+  update: (id: number, data: any) => api.put(`/books/${id}`, data),
 };
 
 export const orderService = {

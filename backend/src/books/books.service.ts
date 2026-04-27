@@ -21,4 +21,11 @@ export class BooksService {
     await this.bookRepo.delete(id);
     return { message: 'Kitap silindi' };
   }
+
+  // backend/src/books/books.service.ts
+
+  async update(id: number, updateData: any) {
+    await this.bookRepo.update(id, updateData);
+    return this.bookRepo.findOne({ where: { id: Number(id) } });
+}
 }

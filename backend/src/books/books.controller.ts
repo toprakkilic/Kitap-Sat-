@@ -5,7 +5,8 @@ import {
   Post, 
   Delete, 
   Body, 
-  Param 
+  Param, 
+  Put
 } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { Book } from './entities/book.entity';
@@ -28,4 +29,9 @@ export class BooksController {
   remove(@Param('id') id: number) { 
     return this.booksService.remove(id); 
   }
+
+  @Put(':id') // Güncelleme için PUT kullanılır
+  async update(@Param('id') id: number, @Body() updateData: any) {
+    return this.booksService.update(id, updateData);
+}
 }

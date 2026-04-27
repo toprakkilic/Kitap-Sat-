@@ -1,7 +1,7 @@
 // src/admin/admin.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Not, IsNull } from 'typeorm';
 import { Book } from '../books/entities/book.entity';
 import { Order } from '../orders/entities/order.entity';
 import { AuthService } from '../auth/auth.service';
@@ -92,30 +92,50 @@ export class AdminService {
   }
 
   async seedLargeData() {
-    // 100 kitap üretiminde görsel çeşitliliği artırmak için Open Library'nin rastgele ID'lerini kullanabiliriz
-    const titles = ["Sefiller", "Dönüşüm", "Yabancı", "Simyacı", "Kürk Mantolu Madonna", "Tutunamayanlar", "Semerkant", "Fahrenheit 451", "Körlük", "Bülbülü Öldürmek"];
-    const authors = ["Victor Hugo", "Franz Kafka", "Albert Camus", "Paulo Coelho", "Sabahattin Ali", "Oğuz Atay", "Amin Maalouf", "Ray Bradbury", "Jose Saramago", "Harper Lee"];
-    
-    // Rastgele kitap kapakları için farklı Open Library ID'leri
-    const coverIds = [12833075, 12643534, 12713180, 12752102, 12643444, 12845642, 12833075, 8225226, 10526023, 12817812];
+    // Geliştirme aşamasını yansıtan "test" verileri
+    const testTitles = [
+      "Deneme Kitap asdasd", 
+      "Test Verisi 123", 
+      "Çalışıyor mu bu?", 
+      "Backend Test Kitabı", 
+      "asdasdasd", 
+      "Yeni Kitap (Final Test)", 
+      "Sistemi Dene 1", 
+      "Mock Data - Kitap", 
+      "Test Başlığı", 
+      "Kamyonet Test Girişi"
+    ];
 
+    const testAuthors = [
+      "Test Yazarı", 
+      "Admin Test", 
+      "asd Yazar", 
+      "Geliştirici", 
+      "Sistem Testi", 
+      "Kullanıcı Deneme"
+    ];
+    
+    const coverIds = [8231856, 240727, 10527843, 10523338, 11153231, 10521270, 11115768, 10526023];
     const bulkBooks: any = [];
 
     for (let i = 0; i < 100; i++) {
-      const randomIndex = Math.floor(Math.random() * titles.length);
+      const randomTitle = testTitles[Math.floor(Math.random() * testTitles.length)];
+      const randomAuthor = testAuthors[Math.floor(Math.random() * testAuthors.length)];
+      
       bulkBooks.push({
-        title: `${titles[randomIndex]} - ${i + 1}`, // Aynı başlığa sahip kitapları ayırt etmek için numara ekliyoruz
-        author: authors[randomIndex],
+        title: `${randomTitle}`,
+        author: randomAuthor,
         coverImage: `https://covers.openlibrary.org/b/id/${coverIds[Math.floor(Math.random() * coverIds.length)]}-L.jpg`,
-        price: Math.floor(Math.random() * (450 - 80) + 80) 
+        price: Math.floor(Math.random() * (500 - 50) + 50) 
       });
     }
 
+    // Bu satırlar artık metodun içinde
     await this.bookRepo.save(bulkBooks);
     
     return {
       status: 'Success',
-      message: '100 adet gerçekçi kapaklı kitap başarıyla oluşturuldu.',
+      message: '100 adet test verisi başarıyla oluşturuldu.',
       count: 100
     };
   }
