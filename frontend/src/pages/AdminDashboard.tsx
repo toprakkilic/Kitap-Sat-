@@ -16,7 +16,6 @@ const AdminDashboard = () => {
     coverImage: '' 
   });
 
-  // Toplam Geliri Hesaplayan Fonksiyon
   const calculateTotalRevenue = () => {
     return reports.reduce((acc, curr) => acc + curr.revenue, 0).toLocaleString('tr-TR', { minimumFractionDigits: 2 });
   };
@@ -35,72 +34,65 @@ const AdminDashboard = () => {
   };
 
   const handleReset = async () => {
-    if (window.confirm("Sistemi temizleyip Golden State (Satışa Hazır) durumuna döndürmek istiyor musunuz?")) {
+    if (window.confirm("Sistemi temizleyip Golden State durumuna döndürmek istiyor musunuz?")) {
       await adminService.resetSystem();
-      alert("Sistem başarıyla sıfırlandı ve demo verileri yüklendi!");
+      alert("Sistem sıfırlandı!");
       loadAllData();
     }
   };
 
   const handleBulkSeed = async () => {
-    if (window.confirm("Sisteme 100 adet rastgele kitap eklenecek. Onaylıyor musunuz?")) {
+    if (window.confirm("100 adet kitap eklenecek. Onaylıyor musunuz?")) {
       try {
         await adminService.seedBulkData();
-        alert("100 kitap başarıyla oluşturuldu!");
+        alert("100 kitap oluşturuldu!");
         loadAllData();
       } catch (error) {
-        alert("Toplu kitap ekleme sırasında bir hata oluştu.");
+        alert("Hata oluştu.");
       }
     }
   };
 
   const handleAddBook = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newBook.title || !newBook.author || newBook.price <= 0) {
-      alert("Lütfen tüm alanları geçerli şekilde doldurun!");
-      return;
-    }
-
     try {
       await bookService.create(newBook);
       setNewBook({ title: '', author: '', price: 0, coverImage: '' }); 
-      alert("Kitap başarıyla eklendi!");
       loadAllData(); 
     } catch (error) {
-      alert("Kitap eklenirken bir hata oluştu.");
+      alert("Hata oluştu.");
     }
   };
 
   useEffect(() => { loadAllData(); }, []);
 
-  // --- PROFESYONEL STİL OBJELERİ ---
+  // --- YENİ RENK PALETİ STİLLERİ ---
   const containerStyle = {
     maxWidth: '1200px',
     margin: '0 auto',
     padding: '40px 20px',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-    color: '#1e293b',
-    backgroundColor: '#f8fafc',
+    fontFamily: 'sans-serif',
+    color: '#37353E',
+    backgroundColor: '#D3DAD9', // Ana Zemin
     minHeight: '100vh'
   };
 
   const cardStyle = {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#37353E', // Koyu Kartlar
+    color: '#D3DAD9',
     padding: '24px',
     borderRadius: '16px',
     marginBottom: '32px',
-    border: '1px solid #e2e8f0',
-    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)'
+    border: '1px solid #44444E',
+    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)'
   };
 
-  // Yeni İstatistik Kartı Stili
   const statsCardStyle = {
     ...cardStyle,
     display: 'flex',
     flexDirection: 'column' as const,
     justifyContent: 'center',
-    background: 'linear-gradient(135deg, #1e293b 0%, #334155 100%)',
-    color: '#fff',
+    background: 'linear-gradient(135deg, #715A5A 0%, #37353E 100%)', // Vurgu Geçişi
     border: 'none'
   };
 
@@ -108,34 +100,40 @@ const AdminDashboard = () => {
     width: '100%',
     padding: '12px 16px',
     borderRadius: '10px',
-    border: '1px solid #cbd5e1',
+    border: '1px solid #44444E',
     fontSize: '0.95rem',
     outline: 'none',
-    transition: 'border-color 0.2s',
-    backgroundColor: '#fff'
+    backgroundColor: '#44444E', // Koyu Input
+    color: '#D3DAD9',
+    boxSizing: 'border-box' as const
   };
 
   const labelStyle = {
     display: 'block',
     fontSize: '0.75rem',
     fontWeight: '700',
-    color: '#64748b',
+    color: '#715A5A', // Etiketler vurgu rengi
     marginBottom: '8px',
-    textTransform: 'uppercase' as const,
-    letterSpacing: '0.025em'
+    textTransform: 'uppercase' as const
   };
 
   const buttonPrimary = {
     padding: '12px 24px',
-    backgroundColor: '#2563eb',
-    color: 'white',
+    backgroundColor: '#715A5A', // Ana Buton Rengi
+    color: '#D3DAD9',
     border: 'none',
     borderRadius: '10px',
     cursor: 'pointer',
-    fontWeight: '600',
+    fontWeight: '700',
     fontSize: '0.9rem',
-    transition: 'background-color 0.2s',
-    boxShadow: '0 4px 6px -1px rgba(37, 99, 235, 0.2)'
+    transition: 'all 0.2s'
+  };
+
+  const resetButtonStyle = {
+    ...buttonPrimary,
+    backgroundColor: 'transparent',
+    border: '1px solid #715A5A',
+    color: '#715A5A'
   };
 
   return (
@@ -143,57 +141,40 @@ const AdminDashboard = () => {
       {/* HEADER */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
         <div>
-          <h2 style={{ fontSize: '2rem', fontWeight: 800, margin: 0, color: '#0f172a', letterSpacing: '-0.025em' }}>Yönetici Dashboard</h2>
-          <p style={{ margin: '4px 0 0', color: '#64748b', fontSize: '0.95rem' }}>Sistem envanterini ve satış raporlarını buradan yönetebilirsiniz.</p>
+          <h2 style={{ fontSize: '2rem', fontWeight: 800, margin: 0, color: '#37353E' }}>Yönetici Dashboard</h2>
+          <p style={{ margin: '4px 0 0', color: '#44444E', fontWeight: 500 }}>Sistem envanterini ve satış raporlarını yönetin.</p>
         </div>
         
         <div style={{ display: 'flex', gap: '12px' }}>
-          <button onClick={handleBulkSeed} style={{ ...buttonPrimary, backgroundColor: '#f59e0b', boxShadow: '0 4px 6px -1px rgba(245, 158, 11, 0.2)' }}>
-            100 Rastgele Kitap Üret
+          <button onClick={handleBulkSeed} style={buttonPrimary}>
+            100 Kitap Üret
           </button>
-          
-          <button onClick={handleReset} style={{ ...buttonPrimary, backgroundColor: '#ef4444', boxShadow: '0 4px 6px -1px rgba(239, 68, 68, 0.2)' }}>
+          <button onClick={handleReset} style={resetButtonStyle}>
             Sistemi Sıfırla
           </button>
         </div>
       </div>
 
-      {/* TOPLAM GELİR KARTI VE GRAFİK YAN YANA (İsteğe bağlı grid yapısı) */}
+      {/* ÜST ANALİZ ALANI */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', marginBottom: '8px' }}>
-        
-        {/* TOTAL REVENUE KARTI */}
         <div style={statsCardStyle}>
-            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Toplam Brüt Gelir</span>
-            <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '12px 0', color: '#fff' }}>₺{calculateTotalRevenue()}</h1>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ backgroundColor: 'rgba(16, 185, 129, 0.2)', color: '#10b981', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700 }}>
-                    Aktif Satışlar
-                </span>
-                <span style={{ color: '#94a3b8', fontSize: '0.75rem' }}>Son {reports.length} Ayın Verisi</span>
-            </div>
+            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#D3DAD9', opacity: 0.8, textTransform: 'uppercase' }}>Toplam Brüt Gelir</span>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '12px 0' }}>₺{calculateTotalRevenue()}</h1>
+            <span style={{ color: '#D3DAD9', fontSize: '0.75rem', fontWeight: 600 }}>AKTİF SATIŞ VERİLERİ</span>
         </div>
 
-        {/* GRAFİK ANALİZ */}
-        <section style={{ ...cardStyle, flex: 2 }}>
-            <h3 style={{ marginTop: 0, marginBottom: '24px', fontSize: '1.1rem', fontWeight: 700 }}>Aylık Satış Analizi</h3>
+        <section style={cardStyle}>
+            <h3 style={{ marginTop: 0, marginBottom: '20px', fontSize: '1.1rem', color: '#715A5A' }}>Aylık Satış Analizi</h3>
             <div style={{ width: '100%', height: 250 }}>
             <ResponsiveContainer>
                 <LineChart data={reports}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 11}} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 11}} dx={-10} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#44444E" />
+                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fill: '#D3DAD9', fontSize: 11}} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{fill: '#D3DAD9', fontSize: 11}} dx={-10} />
                 <Tooltip 
-                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }} 
-                    cursor={{ stroke: '#e2e8f0', strokeWidth: 2 }}
+                    contentStyle={{ backgroundColor: '#37353E', borderRadius: '12px', border: '1px solid #715A5A', color: '#D3DAD9' }} 
                 />
-                <Line 
-                    type="monotone" 
-                    dataKey="revenue" 
-                    stroke="#3b82f6" 
-                    strokeWidth={4} 
-                    dot={{ r: 4, fill: '#3b82f6', strokeWidth: 2, stroke: '#fff' }} 
-                    activeDot={{ r: 7, strokeWidth: 0 }} 
-                />
+                <Line type="monotone" dataKey="revenue" stroke="#715A5A" strokeWidth={4} dot={{ r: 4, fill: '#715A5A' }} />
                 </LineChart>
             </ResponsiveContainer>
             </div>
@@ -202,61 +183,33 @@ const AdminDashboard = () => {
 
       {/* YENİ KAYIT FORMU */}
       <section style={cardStyle}>
-        <h3 style={{ marginTop: 0, marginBottom: '24px', fontSize: '1.1rem', fontWeight: 700 }}>Envantere Kitap Ekle</h3>
+        <h3 style={{ marginTop: 0, marginBottom: '24px', fontSize: '1.1rem', color: '#715A5A' }}>Envantere Kitap Ekle</h3>
         <form onSubmit={handleAddBook} style={{ display: 'flex', gap: '20px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
           <div style={{ flex: '1 1 240px' }}>
             <label style={labelStyle}>Kitap Adı</label>
-            <input 
-              type="text" 
-              value={newBook.title}
-              onChange={e => setNewBook({...newBook, title: e.target.value})}
-              style={inputStyle}
-              placeholder="Örn: Nutuk"
-            />
+            <input type="text" value={newBook.title} onChange={e => setNewBook({...newBook, title: e.target.value})} style={inputStyle} />
           </div>
           <div style={{ flex: '1 1 200px' }}>
             <label style={labelStyle}>Yazar</label>
-            <input 
-              type="text" 
-              value={newBook.author}
-              onChange={e => setNewBook({...newBook, author: e.target.value})}
-              style={inputStyle}
-              placeholder="Örn: M. Kemal Atatürk"
-            />
+            <input type="text" value={newBook.author} onChange={e => setNewBook({...newBook, author: e.target.value})} style={inputStyle} />
           </div>
-          
           <div style={{ flex: '1 1 280px' }}>
-            <label style={labelStyle}>Kapak Fotoğrafı URL</label>
-            <input 
-              type="text" 
-              value={newBook.coverImage}
-              onChange={e => setNewBook({...newBook, coverImage: e.target.value})}
-              style={inputStyle}
-              placeholder="https://gorsel-linki.com/kapak.jpg"
-            />
+            <label style={labelStyle}>Kapak URL</label>
+            <input type="text" value={newBook.coverImage} onChange={e => setNewBook({...newBook, coverImage: e.target.value})} style={inputStyle} />
           </div>
-
           <div style={{ flex: '0 1 120px' }}>
-            <label style={labelStyle}>Birim Fiyat (TL)</label>
-            <input 
-              type="number" 
-              value={newBook.price || ''}
-              onChange={e => setNewBook({...newBook, price: Number(e.target.value)})}
-              style={inputStyle}
-              placeholder="0"
-            />
+            <label style={labelStyle}>Fiyat (TL)</label>
+            <input type="number" value={newBook.price || ''} onChange={e => setNewBook({...newBook, price: Number(e.target.value)})} style={inputStyle} />
           </div>
-          <button type="submit" style={{ ...buttonPrimary, backgroundColor: '#059669', height: '48px', padding: '0 32px', boxShadow: '0 4px 6px -1px rgba(5, 150, 105, 0.2)' }}>
-            Kaydet
-          </button>
+          <button type="submit" style={buttonPrimary}>Kaydet</button>
         </form>
       </section>
 
       {/* ENVANTER LİSTESİ */}
-      <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <h3 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '24px', color: '#37353E' }}>
         Envanter Yönetimi 
-        <span style={{ fontSize: '0.9rem', backgroundColor: '#e2e8f0', padding: '4px 12px', borderRadius: '20px', color: '#475569' }}>
-          {books.length} Kayıt
+        <span style={{ fontSize: '0.9rem', backgroundColor: '#37353E', marginLeft: '12px', padding: '4px 12px', borderRadius: '20px', color: '#D3DAD9' }}>
+          {books.length} Kitap
         </span>
       </h3>
       
@@ -267,22 +220,14 @@ const AdminDashboard = () => {
             book={book} 
             actionButton={
               <button 
-                onClick={async () => { if(window.confirm("Bu kayıt kalıcı olarak silinecektir. Devam edilsin mi?")) { await bookService.delete(book.id); loadAllData(); } }}
+                onClick={async () => { if(window.confirm("Silinsin mi?")) { await bookService.delete(book.id); loadAllData(); } }}
                 style={{ 
-                  marginTop: '16px', 
-                  width: '100%', 
-                  padding: '10px', 
-                  backgroundColor: '#fff', 
-                  color: '#64748b', 
-                  border: '1px solid #e2e8f0', 
-                  borderRadius: '10px', 
-                  cursor: 'pointer',
-                  fontWeight: '600',
-                  fontSize: '0.85rem',
-                  transition: 'all 0.2s'
+                  marginTop: '16px', width: '100%', padding: '10px', backgroundColor: 'transparent', 
+                  color: '#715A5A', border: '1px solid #715A5A', borderRadius: '10px', 
+                  cursor: 'pointer', fontWeight: '700'
                 }}
               >
-                Sistemden Kaldır
+                Kaldır
               </button>
             }
           />

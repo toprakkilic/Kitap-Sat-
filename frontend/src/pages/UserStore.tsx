@@ -42,69 +42,74 @@ const UserStore = () => {
     }
   };
 
-  // --- KURUMSAL STİL OBJELERİ ---
+  // --- YENİ RENK PALETİ STİLLERİ ---
   const storeContainerStyle = {
     maxWidth: '1280px',
     margin: '0 auto',
     padding: '40px 20px',
     display: 'flex',
     gap: '32px',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    backgroundColor: '#f8fafc',
+    fontFamily: 'sans-serif',
+    backgroundColor: '#D3DAD9', // Ana Zemin
     minHeight: '100vh'
   };
 
   const cartPanelStyle = {
     flex: '0 0 350px',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#37353E', // Koyu Kart Tonu
+    color: '#D3DAD9',
     padding: '24px',
-    borderRadius: '20px',
-    border: '1px solid #e2e8f0',
+    borderRadius: '24px',
+    border: '1px solid #44444E',
     height: 'fit-content',
     position: 'sticky' as const,
-    top: '20px',
-    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.05)'
+    top: '90px', // Navbar yüksekliğine göre ayarlandı
+    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.2)'
   };
 
   const addToCartButtonStyle = {
     marginTop: '12px',
     width: '100%',
     padding: '12px',
-    backgroundColor: '#2563eb',
-    color: 'white',
+    backgroundColor: '#715A5A', // Vurgu Rengi
+    color: '#D3DAD9',
     border: 'none',
     borderRadius: '10px',
     fontWeight: '700',
     fontSize: '0.9rem',
     cursor: 'pointer',
     transition: 'all 0.2s',
-    boxShadow: '0 4px 6px -1px rgba(37, 99, 235, 0.2)'
+    boxShadow: '0 4px 6px rgba(0,0,0,0.2)'
   };
 
   const checkoutButtonStyle = {
     width: '100%',
     padding: '16px',
-    backgroundColor: '#059669',
-    color: 'white',
+    backgroundColor: '#715A5A',
+    color: '#D3DAD9',
     border: 'none',
-    borderRadius: '12px',
+    borderRadius: '14px',
     fontWeight: '800',
     fontSize: '1rem',
     cursor: 'pointer',
     marginTop: '20px',
-    boxShadow: '0 10px 15px -3px rgba(5, 150, 105, 0.3)'
+    transition: 'all 0.2s',
+    textTransform: 'uppercase' as const,
+    letterSpacing: '0.05em'
   };
 
   return (
     <div style={storeContainerStyle}>
       {/* SOL TARAF: Kitap Listesi */}
       <div style={{ flex: 1 }}>
-        <div style={{ marginBottom: '32px' }}>
-          <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>Kitap Mağazası</h2>
-          <p style={{ color: '#64748b', marginTop: '4px' }}>Yeni dünyaları keşfetmek için koleksiyonumuza göz atın.</p>
+        <div style={{ marginBottom: '40px' }}>
+          <h2 style={{ fontSize: '2.25rem', fontWeight: 900, color: '#37353E', margin: 0, letterSpacing: '-0.025em' }}>
+            Kitap <span style={{ color: '#715A5A' }}>Mağazası</span>
+          </h2>
+          <p style={{ color: '#44444E', marginTop: '8px', fontWeight: 600 }}>Kamyonet ile kapınıza gelecek yeni dünyalar.</p>
         </div>
         
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '28px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '32px' }}>
           {books.map(book => (
             <BookCard 
               key={book.id} 
@@ -113,6 +118,8 @@ const UserStore = () => {
                 <button 
                   onClick={() => addToCart(book)} 
                   style={addToCartButtonStyle}
+                  onMouseOver={(e) => e.currentTarget.style.filter = 'brightness(1.2)'}
+                  onMouseOut={(e) => e.currentTarget.style.filter = 'brightness(1)'}
                 >
                   Sepete Ekle
                 </button>
@@ -124,29 +131,31 @@ const UserStore = () => {
 
       {/* SAĞ TARAF: Sepet Paneli */}
       <div style={cartPanelStyle}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px', borderBottom: '2px solid #f1f5f9', paddingBottom: '16px' }}>
-          <span style={{ fontSize: '1.5rem' }}>🛒</span>
-          <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700 }}>Sepetim</h3>
-          <span style={{ backgroundColor: '#2563eb', color: 'white', padding: '2px 10px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: 700 }}>
-            {cart.length}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px', borderBottom: '1px solid #44444E', paddingBottom: '20px' }}>
+          <span style={{ fontSize: '1.5rem', backgroundColor: '#44444E', padding: '8px', borderRadius: '12px' }}>🛒</span>
+          <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 800 }}>Sipariş Özeti</h3>
+          <span style={{ backgroundColor: '#715A5A', color: '#D3DAD9', padding: '4px 10px', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 800, marginLeft: 'auto' }}>
+            {cart.length} ÜRÜN
           </span>
         </div>
 
-        <div style={{ maxHeight: '400px', overflowY: 'auto', marginBottom: '20px', paddingRight: '4px' }}>
+        <div style={{ maxHeight: '350px', overflowY: 'auto', marginBottom: '20px', paddingRight: '8px' }}>
           {cart.length === 0 ? (
-            <p style={{ textAlign: 'center', color: '#94a3b8', fontSize: '0.9rem', fontStyle: 'italic', padding: '20px 0' }}>
-              Sepetiniz şu an boş.
-            </p>
+            <div style={{ textAlign: 'center', padding: '40px 0' }}>
+              <p style={{ color: '#D3DAD9', opacity: 0.5, fontSize: '0.9rem', fontStyle: 'italic', margin: 0 }}>
+                Sevkiyat listesi boş.
+              </p>
+            </div>
           ) : (
             cart.map((item, index) => (
-              <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', padding: '8px', borderRadius: '8px', backgroundColor: '#f8fafc' }}>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#1e293b' }}>{item.title}</span>
-                  <span style={{ fontSize: '0.8rem', color: '#64748b' }}>₺{item.price}</span>
+              <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', padding: '12px', borderRadius: '12px', backgroundColor: '#44444E', border: '1px solid rgba(113, 90, 90, 0.3)' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '80%' }}>
+                  <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#D3DAD9', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.title}</span>
+                  <span style={{ fontSize: '0.8rem', color: '#715A5A', fontWeight: 700 }}>₺{item.price}</span>
                 </div>
                 <button 
                   onClick={() => removeFromCart(index)} 
-                  style={{ border: 'none', background: '#fee2e2', color: '#ef4444', width: '24px', height: '24px', borderRadius: '50%', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 'bold' }}
+                  style={{ border: 'none', background: 'transparent', color: '#715A5A', cursor: 'pointer', fontSize: '1rem', fontWeight: 'bold' }}
                 >
                   ✕
                 </button>
@@ -155,18 +164,22 @@ const UserStore = () => {
           )}
         </div>
 
-        <div style={{ borderTop: '2px solid #f1f5f9', paddingTop: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ color: '#64748b', fontWeight: 600 }}>Genel Toplam</span>
-            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a' }}>
-              ₺{cart.reduce((sum, item) => sum + item.price, 0)}
-            </span>
+        <div style={{ borderTop: '1px solid #44444E', paddingTop: '20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+            <span style={{ color: '#D3DAD9', opacity: 0.6, fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase' }}>Toplam Ödenecek</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+             <span style={{ fontSize: '2rem', fontWeight: 900, color: '#D3DAD9' }}>
+               ₺{cart.reduce((sum, item) => sum + item.price, 0)}
+             </span>
           </div>
           
           <button 
             onClick={handleCheckout}
-            style={cart.length === 0 ? { ...checkoutButtonStyle, backgroundColor: '#cbd5e1', boxShadow: 'none', cursor: 'not-allowed' } : checkoutButtonStyle}
+            style={cart.length === 0 ? { ...checkoutButtonStyle, backgroundColor: '#44444E', color: '#37353E', cursor: 'not-allowed', boxShadow: 'none' } : checkoutButtonStyle}
             disabled={cart.length === 0}
+            onMouseOver={(e) => !cart.length ? null : e.currentTarget.style.transform = 'scale(1.02)'}
+            onMouseOut={(e) => !cart.length ? null : e.currentTarget.style.transform = 'scale(1)'}
           >
             Satın Almayı Tamamla
           </button>

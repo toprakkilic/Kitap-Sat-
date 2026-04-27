@@ -104,7 +104,7 @@ export class AdminService {
     for (let i = 0; i < 100; i++) {
       const randomIndex = Math.floor(Math.random() * titles.length);
       bulkBooks.push({
-        title: `${titles[randomIndex]} (Kopya #${i + 1})`,
+        title: `${titles[randomIndex]} - ${i + 1}`, // Aynı başlığa sahip kitapları ayırt etmek için numara ekliyoruz
         author: authors[randomIndex],
         coverImage: `https://covers.openlibrary.org/b/id/${coverIds[Math.floor(Math.random() * coverIds.length)]}-L.jpg`,
         price: Math.floor(Math.random() * (450 - 80) + 80) 
