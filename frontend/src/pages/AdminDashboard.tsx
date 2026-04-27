@@ -16,6 +16,11 @@ const AdminDashboard = () => {
     coverImage: '' 
   });
 
+  // Toplam Geliri Hesaplayan Fonksiyon
+  const calculateTotalRevenue = () => {
+    return reports.reduce((acc, curr) => acc + curr.revenue, 0).toLocaleString('tr-TR', { minimumFractionDigits: 2 });
+  };
+
   const loadAllData = async () => {
     try {
       const [booksRes, reportsRes] = await Promise.all([
@@ -88,6 +93,17 @@ const AdminDashboard = () => {
     boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)'
   };
 
+  // Yeni İstatistik Kartı Stili
+  const statsCardStyle = {
+    ...cardStyle,
+    display: 'flex',
+    flexDirection: 'column' as const,
+    justifyContent: 'center',
+    background: 'linear-gradient(135deg, #1e293b 0%, #334155 100%)',
+    color: '#fff',
+    border: 'none'
+  };
+
   const inputStyle = {
     width: '100%',
     padding: '12px 16px',
@@ -142,35 +158,51 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* GRAFİK ANALİZ */}
-      <section style={cardStyle}>
-        <h3 style={{ marginTop: 0, marginBottom: '24px', fontSize: '1.25rem', fontWeight: 700 }}>Aylık Satış Analizi</h3>
-        <div style={{ width: '100%', height: 350 }}>
-          <ResponsiveContainer>
-            <LineChart data={reports}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 12}} dy={10} />
-              <YAxis axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 12}} dx={-10} />
-              <Tooltip 
-                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }} 
-                cursor={{ stroke: '#e2e8f0', strokeWidth: 2 }}
-              />
-              <Line 
-                type="monotone" 
-                dataKey="revenue" 
-                stroke="#2563eb" 
-                strokeWidth={4} 
-                dot={{ r: 6, fill: '#2563eb', strokeWidth: 2, stroke: '#fff' }} 
-                activeDot={{ r: 8, strokeWidth: 0 }} 
-              />
-            </LineChart>
-          </ResponsiveContainer>
+      {/* TOPLAM GELİR KARTI VE GRAFİK YAN YANA (İsteğe bağlı grid yapısı) */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', marginBottom: '8px' }}>
+        
+        {/* TOTAL REVENUE KARTI */}
+        <div style={statsCardStyle}>
+            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Toplam Brüt Gelir</span>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '12px 0', color: '#fff' }}>₺{calculateTotalRevenue()}</h1>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ backgroundColor: 'rgba(16, 185, 129, 0.2)', color: '#10b981', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700 }}>
+                    Aktif Satışlar
+                </span>
+                <span style={{ color: '#94a3b8', fontSize: '0.75rem' }}>Son {reports.length} Ayın Verisi</span>
+            </div>
         </div>
-      </section>
+
+        {/* GRAFİK ANALİZ */}
+        <section style={{ ...cardStyle, flex: 2 }}>
+            <h3 style={{ marginTop: 0, marginBottom: '24px', fontSize: '1.1rem', fontWeight: 700 }}>Aylık Satış Analizi</h3>
+            <div style={{ width: '100%', height: 250 }}>
+            <ResponsiveContainer>
+                <LineChart data={reports}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 11}} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 11}} dx={-10} />
+                <Tooltip 
+                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }} 
+                    cursor={{ stroke: '#e2e8f0', strokeWidth: 2 }}
+                />
+                <Line 
+                    type="monotone" 
+                    dataKey="revenue" 
+                    stroke="#3b82f6" 
+                    strokeWidth={4} 
+                    dot={{ r: 4, fill: '#3b82f6', strokeWidth: 2, stroke: '#fff' }} 
+                    activeDot={{ r: 7, strokeWidth: 0 }} 
+                />
+                </LineChart>
+            </ResponsiveContainer>
+            </div>
+        </section>
+      </div>
 
       {/* YENİ KAYIT FORMU */}
       <section style={cardStyle}>
-        <h3 style={{ marginTop: 0, marginBottom: '24px', fontSize: '1.25rem', fontWeight: 700 }}>Envantere Kitap Ekle</h3>
+        <h3 style={{ marginTop: 0, marginBottom: '24px', fontSize: '1.1rem', fontWeight: 700 }}>Envantere Kitap Ekle</h3>
         <form onSubmit={handleAddBook} style={{ display: 'flex', gap: '20px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
           <div style={{ flex: '1 1 240px' }}>
             <label style={labelStyle}>Kitap Adı</label>

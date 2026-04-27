@@ -54,9 +54,19 @@ const BookCard: React.FC<BookCardProps> = ({ book, actionButton }) => {
         <img 
           src={book.coverImage || 'https://via.placeholder.com/150x200?text=Kapak+Yok'} 
           alt={book.title} 
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+          style={{ 
+            width: '100%', 
+            height: '100%', 
+            // 'cover' yerine 'contain' kullanarak tüm kapağın görünmesini sağlıyoruz
+            objectFit: 'contain', 
+            // Resimden boş kalan yerlerin çirkin durmaması için hafif bir zemin rengi
+            backgroundColor: '#f8fafc',
+            // Resim kenarlara sıfır yapışmasın, biraz nefes alsın dersen padding ekleyebilirsin
+            padding: '4px',
+            boxSizing: 'border-box'
+          }} 
         />
-        {/* Fiyat Etiketi (Görselin üzerinde şık durur) */}
+        {/* Fiyat Etiketi */}
         <div style={priceBadgeStyle}>₺{book.price}</div>
       </div>
 
