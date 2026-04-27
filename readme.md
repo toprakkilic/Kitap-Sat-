@@ -1,6 +1,6 @@
 # 📋 Proje Bilgileri
 **Hazırlayan:** Abdullah Toprak Kılıç  
-**Öğrenci Numarası:** [Buraya Numaranı Yaz]  
+**Öğrenci Numarası:** 23253071  
 **Ders:** Yazılım Mühendisliği  
 **Proje Adı:** Kitabevi Yönetim Sistemi
 
