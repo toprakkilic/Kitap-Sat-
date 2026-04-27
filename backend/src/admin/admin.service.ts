@@ -20,69 +20,94 @@ export class AdminService {
     await this.orderRepo.clear(); 
     await this.bookRepo.clear();
 
-    // 2. Golden State verilerini ekle
+    // 2. Golden State verilerini ekle (7 Adet Gerçek Kitap)
     const goldenBooks = [
-      { title: 'Saatleri Ayarlama Enstitüsü', author: 'Ahmet Hamdi Tanpınar', price: 185.00, coverImage: 'https://picsum.photos/seed/b1/200/300' },
-      { title: 'Benim Adım Kırmızı', author: 'Orhan Pamuk', price: 210.00, coverImage: 'https://picsum.photos/seed/b2/200/300' },
-      { title: 'Beyaz Kale', author: 'Orhan Pamuk', price: 195.50, coverImage: 'https://picsum.photos/seed/b3/200/300' }
+      { 
+        title: 'Saatleri Ayarlama Enstitüsü', 
+        author: 'Ahmet Hamdi Tanpınar', 
+        price: 185.00, 
+        coverImage: 'https://covers.openlibrary.org/b/id/12354821-L.jpg' 
+      },
+      { 
+        title: '1984', 
+        author: 'George Orwell', 
+        price: 145.00, 
+        coverImage: 'https://covers.openlibrary.org/b/id/12693610-L.jpg' 
+      },
+      { 
+        title: 'Nutuk', 
+        author: 'Mustafa Kemal Atatürk', 
+        price: 250.00, 
+        coverImage: 'https://covers.openlibrary.org/b/id/12353937-L.jpg' 
+      },
+      { 
+        title: 'Suç ve Ceza', 
+        author: 'Fyodor Dostoyevski', 
+        price: 195.00, 
+        coverImage: 'https://covers.openlibrary.org/b/id/12353059-L.jpg' 
+      },
+      { 
+        title: 'Benim Adım Kırmızı', 
+        author: 'Orhan Pamuk', 
+        price: 210.00, 
+        coverImage: 'https://covers.openlibrary.org/b/id/12630674-L.jpg' 
+      },
+      { 
+        title: 'Dune', 
+        author: 'Frank Herbert', 
+        price: 280.00, 
+        coverImage: 'https://covers.openlibrary.org/b/id/15092781-L.jpg' 
+      },
+      { 
+        title: 'Cesur Yeni Dünya', 
+        author: 'Aldous Huxley', 
+        price: 160.00, 
+        coverImage: 'https://covers.openlibrary.org/b/id/11120906-L.jpg' 
+      }
     ];
 
     await this.bookRepo.save(goldenBooks);
     
-    // 3. Demo için rastgele satış verileri oluştur
-// Son 4 ayı (Ocak, Şubat, Mart, Nisan) baz alacak şekilde sınırlayalım
-const fakeOrders: Order[] = [];
-for (let i = 0; i < 20; i++) {
-    const order = new Order();
-    
-    // Rastgele 0 ile 3 arasında bir sayı seç (0=Nisan, 1=Mart, 2=Şubat, 3=Ocak)
-    const monthsBack = Math.floor(Math.random() * 4); 
-    
-    const date = new Date();
-    // Mevcut aydan geriye git
-    date.setMonth(date.getMonth() - monthsBack);
-    // Gün bilgisini de rastgele yaparak daha gerçekçi bir dağılım sağla
-    date.setDate(Math.floor(Math.random() * 28) + 1);
-    
-    order.totalPrice = parseFloat((Math.random() * 500 + 50).toFixed(2));
-    order.createdAt = date;
-    fakeOrders.push(order);
-}
+    // 3. Demo için rastgele satış verileri oluştur (Son 4 ay)
+    const fakeOrders: Order[] = [];
+    for (let i = 0; i < 20; i++) {
+        const order = new Order();
+        const monthsBack = Math.floor(Math.random() * 4); 
+        const date = new Date();
+        date.setMonth(date.getMonth() - monthsBack);
+        date.setDate(Math.floor(Math.random() * 28) + 1);
+        
+        order.totalPrice = parseFloat((Math.random() * 500 + 50).toFixed(2));
+        order.createdAt = date;
+        fakeOrders.push(order);
+    }
     
     await this.orderRepo.save(fakeOrders);
 
     return { 
         status: 'Success',
-        message: 'Sistem temizlendi ve Golden State verileri yüklendi.',
+        message: 'Sistem temizlendi ve gerçekçi Golden State verileri yüklendi.',
         timestamp: new Date().toISOString()
     };
   }
 
-  // --- YENİ EKLENEN METOT: 100 RASTGELE KİTAP ÜRET ---
   async seedLargeData() {
-    const titles = ["Geleceğin Peşinde", "Yazılımın Ruhu", "Veri Muhafızları", "Kodların Efendisi", "Dijital Dönüşüm", "Siber Şafak", "Algoritma Günlükleri", "Bulutların Ötesi", "Zeka Devrimi", "Sonsuz Döngü"];
-    const authors = ["Ahmet Yılmaz", "Elif Demir", "Can Tekin", "Zeynep Kaya", "Murat Arslan", "Selin Yıldız", "Bora Çelik", "Deniz Aydın", "Hakan Kurt", "Aylin Öz"];
-    const covers = [
-      "https://picsum.photos/seed/b1/200/300",
-      "https://picsum.photos/seed/b2/200/300",
-      "https://picsum.photos/seed/b3/200/300",
-      "https://picsum.photos/seed/b4/200/300",
-      "https://picsum.photos/seed/b5/200/300",
-      "https://picsum.photos/seed/b6/200/300",
-      "https://picsum.photos/seed/b7/200/300",
-      "https://picsum.photos/seed/b8/200/300",
-      "https://picsum.photos/seed/b9/200/300",
-      "https://picsum.photos/seed/b10/200/300"
-    ];
+    // 100 kitap üretiminde görsel çeşitliliği artırmak için Open Library'nin rastgele ID'lerini kullanabiliriz
+    const titles = ["Sefiller", "Dönüşüm", "Yabancı", "Simyacı", "Kürk Mantolu Madonna", "Tutunamayanlar", "Semerkant", "Fahrenheit 451", "Körlük", "Bülbülü Öldürmek"];
+    const authors = ["Victor Hugo", "Franz Kafka", "Albert Camus", "Paulo Coelho", "Sabahattin Ali", "Oğuz Atay", "Amin Maalouf", "Ray Bradbury", "Jose Saramago", "Harper Lee"];
+    
+    // Rastgele kitap kapakları için farklı Open Library ID'leri
+    const coverIds = [12833075, 12643534, 12713180, 12752102, 12643444, 12845642, 12833075, 8225226, 10526023, 12817812];
 
-    const bulkBooks:any = [];
+    const bulkBooks: any = [];
 
     for (let i = 0; i < 100; i++) {
+      const randomIndex = Math.floor(Math.random() * titles.length);
       bulkBooks.push({
-        title: `${titles[Math.floor(Math.random() * titles.length)]} #${i + 1}`,
-        author: authors[Math.floor(Math.random() * authors.length)],
-        coverImage: covers[Math.floor(Math.random() * covers.length)],
-        price: Math.floor(Math.random() * (500 - 50) + 50) 
+        title: `${titles[randomIndex]} (Kopya #${i + 1})`,
+        author: authors[randomIndex],
+        coverImage: `https://covers.openlibrary.org/b/id/${coverIds[Math.floor(Math.random() * coverIds.length)]}-L.jpg`,
+        price: Math.floor(Math.random() * (450 - 80) + 80) 
       });
     }
 
@@ -90,7 +115,7 @@ for (let i = 0; i < 20; i++) {
     
     return {
       status: 'Success',
-      message: '100 adet rastgele kitap başarıyla oluşturuldu.',
+      message: '100 adet gerçekçi kapaklı kitap başarıyla oluşturuldu.',
       count: 100
     };
   }
