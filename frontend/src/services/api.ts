@@ -6,6 +6,9 @@ const api = axios.create({
 
 export const authService = {
   login: (credentials: any) => api.post('/auth/login', credentials),
+  register: (userData: any) => {
+    return api.post('/auth/register', userData);
+  }
 };
 
 export const adminService = {

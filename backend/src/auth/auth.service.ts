@@ -1,5 +1,5 @@
 // src/auth/auth.service.ts
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User, UserRole } from './entities/user.entity';
@@ -42,5 +42,35 @@ async onModuleInit() {
     await this.createDefaultUsers();
     console.log('İlk kurulum: Default kullanıcılar oluşturuldu.');
   }
+}
+// src/auth/auth.service.ts
+
+// src/auth/auth.service.ts
+
+async register(registerData: any) {
+  const { username, password } = registerData;
+
+  // Hata kontrolü: Boş veri gelmesin
+  if (!username || !password) {
+    throw new BadRequestException('Kullanıcı adı ve şifre zorunludur!');
+  }
+
+  // Unique kontrolü
+  const existingUser = await this.userRepo.findOne({ 
+    where: { username: username } 
+  });
+  
+  if (existingUser) {
+    throw new ConflictException('Bu kullanıcı adı zaten alınmış!');
+  }
+
+  // Yeni kullanıcı oluşturma
+  const newUser = this.userRepo.create({
+    username,
+    password, // Düz metin (Demo olduğu için)
+    role: UserRole.USER // Varsayılan olarak müşteri rolü
+  });
+
+  return await this.userRepo.save(newUser);
 }
 }

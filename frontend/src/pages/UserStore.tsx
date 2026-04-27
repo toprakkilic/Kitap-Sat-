@@ -106,7 +106,7 @@ const UserStore = () => {
           <h2 style={{ fontSize: '2.25rem', fontWeight: 900, color: '#37353E', margin: 0, letterSpacing: '-0.025em' }}>
             Kitap <span style={{ color: '#715A5A' }}>Mağazası</span>
           </h2>
-          <p style={{ color: '#44444E', marginTop: '8px', fontWeight: 600 }}>Kamyonet ile kapınıza gelecek yeni dünyalar.</p>
+          <p style={{ color: '#44444E', marginTop: '8px', fontWeight: 600 }}>Toprak ile kapınıza gelecek yeni dünyalar.</p>
         </div>
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '32px' }}>

@@ -1,44 +1,58 @@
-# 📋 Proje Bilgileri
+# 📚 **Kitabevi Yönetim Sistemi**
+
 **Hazırlayan:** Abdullah Toprak Kılıç  
 **Öğrenci Numarası:** 23253071  
 **Ders:** Yazılım Mühendisliği  
-**Proje Adı:** Kitabevi Yönetim Sistemi
 
 ---
 
+## 🏗️ **Teknik Mimari**
 
-# 📚 Kitabevi Yönetim Sistemi (Full-Stack Simülasyon)
+- ⚙️ **Backend:** NestJS  
+- 🎨 **Frontend:** React  
+- 🟦 **Dil:** TypeScript
 
-Bu proje, Yazılım Mühendisliği dersi kapsamında geliştirilmiş; uçtan uca envanter yönetimi, satış analizi ve müşteri alışveriş deneyimini simüle eden bir web uygulamasıdır.
+### 🌐 Uygulama Adresleri
 
-## 🛠️ Teknik Mimari
+| Katman   | URL                    |
+|----------|------------------------|
+| Frontend | http://localhost:3000 |
+| Backend  | http://localhost:3001 |
 
-Proje, **NestJS** (Backend) ve **React** (Frontend) kullanılarak geliştirilmiştir. Tüm geliştirme süreci tip güvenliği için **TypeScript** ile yürütülmüştür.
+### 💾 Veri Yönetimi
 
-- **Frontend Port:** `http://localhost:3000`
-- **Backend Port:** `http://localhost:3001`
-- **Veri Yönetimi:** In-memory / JSON 
+- In-memory veri yapıları  
+- JSON tabanlı veri saklama  
 
 ---
 
-## 🚀 Kurulum ve Çalıştırma
+## 🚀 **Kurulum ve Çalıştırma**
 
-Sistemi yerel makinenizde ayağa kaldırmak için aşağıdaki adımları sırasıyla uygulayınız:
+Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleyin:
 
-### 1. Back-end ayağa kaldırma 
+### 🔧 1. Backend Kurulumu
+
+```bash
 cd backend
 npm install
 npm run start:dev
+```
 
-### 1. Front-end ayağa kaldırma
-cd /frontend
+---
+
+### 🎨 2. Frontend Kurulumu
+
+```bash
+cd frontend
 npm install
-npm stat
+npm start
+```
 
-### Hazır Kullanıcı Rolleri
+---
 
-| Rol | Kullanıcı Adı | Şifre | Yetki Alanı |
-| :--- | :--- | :--- | :--- |
-| **Yönetici (Admin)** | `admin` | `admin123` | Tüm dashboard, grafikler ve envanter yönetimi. |
-| **Kullanıcı (User)** | `user` | `user123` | Kitap mağazası, sepet ve satın alma işlemleri. |
+## 👤 **Hazır Kullanıcı Rolleri**
 
+| Rol                    | Kullanıcı Adı | Şifre     | Yetkiler |
+|------------------------|--------------|----------|----------|
+| 🛡️ **Yönetici (Admin)** | `admin`      | `123` | Dashboard, grafikler ve envanter yönetimi |
+| 👤 **Kullanıcı (User)** | `user`       | `123`  | Mağaza, sepet ve satın alma işlemleri |

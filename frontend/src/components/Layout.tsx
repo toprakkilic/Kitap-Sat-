@@ -48,7 +48,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           © 2026 Kitabevi Yazılım Mühendisliği Ödevi
         </p>
         <div style={{ marginTop: '8px', color: '#D3DAD9', opacity: 0.7, fontSize: '0.75rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-          <span style={{ color: '#715A5A', fontWeight: 800 }}>Golden State</span> Demo — Kamyonet Lojistik & Yazılım
+          <span style={{ color: '#715A5A', fontWeight: 800 }}>Golden State</span> Demo — Toprak Lojistik & Yazılım
         </div>
       </footer>
     </div>
