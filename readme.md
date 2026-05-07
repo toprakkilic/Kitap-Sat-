@@ -1,7 +1,6 @@
 # 📚 **Kitabevi Yönetim Sistemi**
 
-**Hazırlayan:** Abdullah Toprak Kılıç  
-**Öğrenci Numarası:** 23253071  
+**Hazırlayan:** Toprak Kılıç  
 **Ders:** Yazılım Mühendisliği  
 
 ---
